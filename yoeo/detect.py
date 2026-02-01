@@ -285,12 +285,13 @@ def _draw_and_save_output_image(image_path, detections, seg, img_size, output_pa
     output_path_1 = os.path.join(output_path, f"{filename}.png")
     # redraw the canvas
     fig.canvas.draw()
-    # convert canvas to image
-    img = np.fromstring(fig.canvas.tostring_rgb(), dtype=np.uint8,
-                                    sep='')
-    img  = img.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    # convert canvas to image using modern matplotlib API
+    img = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
+    img = img.reshape(fig.canvas.get_width_height()[::-1] + (4,))
+    # RGBA to RGB
+    img = img[:, :, :3]
     # img is rgb, convert to opencv's default bgr
-    img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
     cv2.imwrite(output_path_1, img)
 
