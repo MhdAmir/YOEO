@@ -19,3 +19,13 @@ logs/
 *.onnx
 *.pth
 **/tuning_records.json
+
+*.weights
+*.eros
+*.cfg
+*.xml
+*.yaml
+*.jpg
+*.png
+*.txt
+*.bin
